@@ -48,6 +48,9 @@ def generate_style_mix(
     outdir: str
 ):
     
+    max_styles= len(col_styles)
+    print("inside style_mixig")
+    print(max_styles)
     print('Loading networks from "%s"...' % network_pkl)
     device = torch.device('cuda')
     with dnnlib.util.open_url(network_pkl) as f:
@@ -96,7 +99,7 @@ def generate_style_mix(
             if col_idx == 0:
                 key = (row_seed, row_seed)
             canvas.paste(PIL.Image.fromarray(image_dict[key], 'RGB'), (W * col_idx, H * row_idx))
-    canvas.save(f'{outdir}/grid.png')
+    canvas.save(f'{outdir}/{max_styles:04d}.png')
 
 
 #----------------------------------------------------------------------------

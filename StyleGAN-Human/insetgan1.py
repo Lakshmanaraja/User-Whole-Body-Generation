@@ -117,6 +117,7 @@ class InsetGAN(torch.nn.Module):
     def dual_optimizer(self, 
                        face_w,
                        body_w,
+                       joint_optimization = True,
                        joint_steps=500,
                        face_initial_learning_rate=0.02,
                        body_initial_learning_rate=0.05,
@@ -264,63 +265,62 @@ class InsetGAN(torch.nn.Module):
             global_step += 1
         
         # Stage3: joint optimization
-        interval = 50
-        joint_face_steps = joint_steps // 2
-        joint_body_steps = joint_steps // 2
-        face_step = 0
-        body_step = 0
-        pbar = tqdm(range(joint_steps))
-        flag = -1
-        for step in pbar:
-            if step % interval == 0: flag += 1
-            text_flag = 'optimize_face' if flag % 2 == 0 else 'optimize_body'
-            synth_body, synth_body_face, synth_face_raw, synth_face, body_crop = forward(face_w_opt, 
-                                                                                    body_w_opt, 
-                                                                                    face_w_delta, 
-                                                                                    body_w_delta, 
-                                                                                    body_crop)
-            if text_flag == 'optimize_face':
-                face_lr = update_lr(face_initial_learning_rate, face_step, joint_face_steps, lr_rampdown_length, lr_rampup_length)
-                for param_group in face_optimizer.param_groups:
-                    param_group['lr'] =face_lr
-                loss_face = self.loss_face(synth_face_raw, ref_face, face_crop, 5000, 1.75)
-                loss_coarse = self.loss_coarse(synth_face, synth_body_face, 500, 0.05)
-                loss_border = self.loss_border(synth_face, synth_body_face, 25000, 0)
-                loss = loss_coarse + loss_border + loss_face
-                face_optimizer.zero_grad()
-                loss.backward()
-                face_optimizer.step()
-                pbar.set_description(
-                    (                
-                        f"face: {step}, lr: {face_lr:.4f}, loss: {loss.item():.2f}, loss_coarse: {loss_coarse.item():.2f};"
-                        f"loss_border: {loss_border.item():.2f}, loss_face: {loss_face.item():.2f};"
+        if joint_optimization == True:
+            interval = 50
+            joint_face_steps = joint_steps // 2
+            joint_body_steps = joint_steps // 2
+            face_step = 0
+            body_step = 0
+            pbar = tqdm(range(joint_steps))
+            flag = -1
+            for step in pbar:
+                if step % interval == 0: flag += 1
+                text_flag = 'optimize_face' if flag % 2 == 0 else 'optimize_body'
+                synth_body, synth_body_face, synth_face_raw, synth_face, body_crop = forward(face_w_opt, body_w_opt,face_w_delta,body_w_delta,body_crop)
+            
+
+                if text_flag == 'optimize_face':
+                    face_lr = update_lr(face_initial_learning_rate, face_step, joint_face_steps, lr_rampdown_length, lr_rampup_length)
+                    for param_group in face_optimizer.param_groups:
+                        param_group['lr'] =face_lr
+                    loss_face = self.loss_face(synth_face_raw, ref_face, face_crop, 5000, 1.75)
+                    loss_coarse = self.loss_coarse(synth_face, synth_body_face, 500, 0.05)
+                    loss_border = self.loss_border(synth_face, synth_body_face, 25000, 0)
+                    loss = loss_coarse + loss_border + loss_face
+                    face_optimizer.zero_grad()
+                    loss.backward()
+                    face_optimizer.step()
+                    pbar.set_description(
+                        (                
+                            f"face: {step}, lr: {face_lr:.4f}, loss: {loss.item():.2f}, loss_coarse: {loss_coarse.item():.2f};"
+                            f"loss_border: {loss_border.item():.2f}, loss_face: {loss_face.item():.2f};"
+                        )
                     )
-                )
-                face_step += 1
-            else:
-                body_lr = update_lr(body_initial_learning_rate, body_step, joint_body_steps, lr_rampdown_length, lr_rampup_length)
-                for param_group in body_optimizer.param_groups:
-                    param_group['lr'] =body_lr
-                loss_coarse = self.loss_coarse(synth_face, synth_body_face, 500, 0.05)
-                loss_border = self.loss_border(synth_face, synth_body_face, 2500, 0)
-                loss_body = self.loss_body(synth_body, ref_body, body_crop, 9000, 0.1)
-                loss_reg = self.loss_reg(body_w_opt, body_w_mean, 25000, body_w_delta, 0)
-                loss = loss_coarse + loss_border + loss_body + loss_reg
-                body_optimizer.zero_grad()
-                loss.backward()
-                body_optimizer.step()
-                pbar.set_description(
-                    (
-                        f"body: {step}, lr: {body_lr:.4f}, loss: {loss.item():.2f}, loss_coarse: {loss_coarse.item():.2f};"
-                        f"loss_border: {loss_border.item():.2f}, loss_body: {loss_body.item():.2f}, loss_reg: {loss_reg:.2f}"
+                    face_step += 1
+                else:
+                    body_lr = update_lr(body_initial_learning_rate, body_step, joint_body_steps, lr_rampdown_length, lr_rampup_length)
+                    for param_group in body_optimizer.param_groups:
+                        param_group['lr'] =body_lr
+                    loss_coarse = self.loss_coarse(synth_face, synth_body_face, 500, 0.05)
+                    loss_border = self.loss_border(synth_face, synth_body_face, 2500, 0)
+                    loss_body = self.loss_body(synth_body, ref_body, body_crop, 9000, 0.1)
+                    loss_reg = self.loss_reg(body_w_opt, body_w_mean, 25000, body_w_delta, 0)
+                    loss = loss_coarse + loss_border + loss_body + loss_reg
+                    body_optimizer.zero_grad()
+                    loss.backward()
+                    body_optimizer.step()
+                    pbar.set_description(
+                        (
+                            f"body: {step}, lr: {body_lr:.4f}, loss: {loss.item():.2f}, loss_coarse: {loss_coarse.item():.2f};"
+                            f"loss_border: {loss_border.item():.2f}, loss_body: {loss_body.item():.2f}, loss_reg: {loss_reg:.2f}"
+                        )
                     )
-                )
-                body_step += 1
-            if video:
-                visual_(output_path, synth_body, synth_face, body_crop, global_step)
-            global_step += 1
-        #return face_w_opt.repeat([1, 18, 1])+face_w_delta, body_w_opt.repeat([1, 18, 1])+body_w_delta, body_crop
-        return face_w_opt + face_w_delta, body_w_opt.repeat([1, 18, 1])+body_w_delta, body_crop
+                    body_step += 1
+                if video:
+                    visual_(output_path, synth_body, synth_face, body_crop, global_step)
+                global_step += 1
+            #return face_w_opt.repeat([1, 18, 1])+face_w_delta, body_w_opt.repeat([1, 18, 1])+body_w_delta, body_crop
+            return face_w_opt + face_w_delta, body_w_opt.repeat([1, 18, 1])+body_w_delta, body_crop
 
 
 
@@ -353,6 +353,7 @@ def main(
         body_network: str,
         face_seed: int,
         body_seed: int,
+        joint_optimization: bool,
         joint_steps: int,
         truncation_psi: float,
         outdir: str,
@@ -380,6 +381,7 @@ def main(
     optim_face_w, optim_body_w, crop = insgan.dual_optimizer(
         face_w, 
         body_w,
+        joint_optimization = True,
         joint_steps=joint_steps,
         seed=f'{face_seed:04d}_{body_seed:04d}',
         output_path=outdir,

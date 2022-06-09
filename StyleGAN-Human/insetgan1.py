@@ -249,10 +249,10 @@ class InsetGAN(torch.nn.Module):
             loss_body = self.loss_body(synth_body, ref_body, body_crop, 9000, 0.1)
             loss_reg = self.loss_reg(body_w_opt, body_w_mean, 15000, body_w_delta, 0)
             
-            if joint_optimization == False:
+            if joint_optimization == False :
             
                 loss = loss_coarse + loss_border  + loss_reg
-            else
+            else :
                 loss = loss_coarse + loss_border  + loss_reg + loss_body
 
             body_optimizer.zero_grad()

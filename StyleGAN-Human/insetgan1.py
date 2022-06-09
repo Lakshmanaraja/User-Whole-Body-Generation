@@ -246,9 +246,15 @@ class InsetGAN(torch.nn.Module):
                                                                                     update_crop=update_crop)
             loss_coarse = self.loss_coarse(synth_face, synth_body_face, 500, 0.05)
             loss_border = self.loss_border(synth_face, synth_body_face, 2500, 0)
-            #loss_body = self.loss_body(synth_body, ref_body, body_crop, 9000, 0.1)
+            loss_body = self.loss_body(synth_body, ref_body, body_crop, 9000, 0.1)
             loss_reg = self.loss_reg(body_w_opt, body_w_mean, 15000, body_w_delta, 0)
-            loss = loss_coarse + loss_border + loss_reg
+            
+            if joint_optimization == False:
+            
+                loss = loss_coarse + loss_border  + loss_reg
+            else
+                loss = loss_coarse + loss_border  + loss_reg + loss_body
+
             body_optimizer.zero_grad()
             loss.backward()
             body_optimizer.step()     
@@ -264,10 +270,7 @@ class InsetGAN(torch.nn.Module):
             )    
             global_step += 1
 
-        if joint_optimization == False:
-            return face_w_opt + face_w_delta, body_w_opt.repeat([1, 18, 1])+body_w_delta, body_crop
-            
-        else:
+       
         # Stage3: joint optimization
             if joint_optimization:
                 interval = 50

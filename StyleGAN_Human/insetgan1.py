@@ -9,8 +9,8 @@ import numpy as np
 from torch_utils.models import Generator as bodyGAN
 from torch_utils.models_face import Generator as FaceGAN
 import dlib
-from utils.alignment import align_face_for_insetgan
-from utils.util import visual,tensor_to_numpy, numpy_to_tensor
+from User_Whole_Body_Generation.StyleGAN_Human.utils.alignment import align_face_for_insetgan
+from User_Whole_Body_Generation.StyleGAN_Human.utils.util import visual,tensor_to_numpy, numpy_to_tensor
 import legacy
 import os
 import click

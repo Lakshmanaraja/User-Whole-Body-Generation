@@ -93,7 +93,7 @@ class BaseCoach:
         else:
             id_image = torch.squeeze((image.to(global_config.device) + 1) / 2) * 255
             print("inside base_coach : calc_inversions")
-            print(id_image.size)
+            print(id_image.size())
             
             w = w_projector.project(self.G, id_image, device=torch.device(global_config.device), w_avg_samples=600,
                                     num_steps=hyperparameters.first_inv_steps, w_name=image_name,

@@ -21,6 +21,10 @@ class SingleIDCoach(BaseCoach):
 
         for fname, image in tqdm(self.data_loader):
             image_name = fname[0]
+            
+            print("inside single_id_coach : before training starts")
+            print(image.size)
+
 
             self.restart_training()
 

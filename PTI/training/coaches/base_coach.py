@@ -84,12 +84,17 @@ class BaseCoach:
         return w
 
     def calc_inversions(self, image, image_name):
-
+        print("inside base_coach : calc_inversions")
+        print(image.size)
+        
         if hyperparameters.first_inv_type == 'w+':
             w = self.get_e4e_inversion(image)
 
         else:
             id_image = torch.squeeze((image.to(global_config.device) + 1) / 2) * 255
+            print("inside base_coach : calc_inversions")
+            print(id_image.size)
+            
             w = w_projector.project(self.G, id_image, device=torch.device(global_config.device), w_avg_samples=600,
                                     num_steps=hyperparameters.first_inv_steps, w_name=image_name,
                                     use_wandb=self.use_wandb)

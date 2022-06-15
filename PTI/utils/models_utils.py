@@ -19,7 +19,10 @@ def load_tuned_G(run_id, type):
 
 
 def load_old_G():
+    print("inside load_old_G from models_utils.py")
+    print( paths_config.stylegan2_ada_ffhq )
     with open(paths_config.stylegan2_ada_ffhq, 'rb') as f:
         old_G = pickle.load(f)['G_ema'].to(global_config.device).eval()
         old_G = old_G.float()
+        print(f'Old G Image Resolution: { old_G.img_resolution }')
     return old_G

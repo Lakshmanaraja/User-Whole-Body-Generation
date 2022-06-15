@@ -23,7 +23,7 @@ class SingleIDCoach(BaseCoach):
             image_name = fname[0]
             
             print("inside single_id_coach : before training starts")
-            print(image.size)
+            print(image.size())
 
 
             self.restart_training()

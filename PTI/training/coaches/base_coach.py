@@ -85,7 +85,7 @@ class BaseCoach:
 
     def calc_inversions(self, image, image_name):
         print("inside base_coach : calc_inversions")
-        print(image.size)
+        print(image.size())
         
         if hyperparameters.first_inv_type == 'w+':
             w = self.get_e4e_inversion(image)

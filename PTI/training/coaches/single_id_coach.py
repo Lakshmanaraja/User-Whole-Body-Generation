@@ -50,7 +50,7 @@ class SingleIDCoach(BaseCoach):
             real_images_batch = image.to(global_config.device)
 
             for i in tqdm(range(hyperparameters.max_pti_steps)):
-                break #for testing v_pivot
+                #break #for testing v_pivot
                 generated_images = self.forward(w_pivot)
                 
                 print("inside training:")

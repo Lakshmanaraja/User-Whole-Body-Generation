@@ -1,6 +1,6 @@
 ## Architechture
 lpips_type = 'alex'
-first_inv_type = 'w+'#'w+'
+first_inv_type = 'w'#'w+'
 optim_type = 'adam'
 
 ## Locality regularization
@@ -16,9 +16,9 @@ pt_l2_lambda = 1
 pt_lpips_lambda = 1
 
 ## Steps
-LPIPS_value_threshold = 0.04
-max_pti_steps = 350
-first_inv_steps = 450
+LPIPS_value_threshold = 0.001
+first_inv_steps = 500
+max_pti_steps = 1000
 max_images_to_invert = 30
 
 ## Optimization

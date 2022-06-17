@@ -80,7 +80,7 @@ class SingleIDCoach(BaseCoach):
 
             self.image_counter += 1
 
-             torch.save(self.G,
+            torch.save(self.G,
                         f'{paths_config.checkpoints_dir}/model_{image_name}.pt') #'.pt'
 #            snapshot_data = dict()
 #            snapshot_data['G_ema'] = self.G

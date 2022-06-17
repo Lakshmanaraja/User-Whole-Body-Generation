@@ -70,10 +70,9 @@ class MultiIDCoach(BaseCoach):
         if self.use_wandb:
             log_images_from_w(w_pivots, self.G, [image[0] for image in images])
 
-        # torch.save(self.G,
-        #            f'{paths_config.checkpoints_dir}/model_{global_config.run_name}_multi_id.pt')
-        snapshot_data = dict()
-        snapshot_data['G_ema'] = self.G
-        import pickle
-        with open(f'{paths_config.checkpoints_dir}/model_{global_config.run_name}_multi_id.pkl', 'wb') as f: 
-                pickle.dump(snapshot_data, f)
+        torch.save(self.G,f'{paths_config.checkpoints_dir}/model_{global_config.run_name}_multi_id.pt')
+#        snapshot_data = dict()
+#        snapshot_data['G_ema'] = self.G
+#        import pickle
+#        with open(f'{paths_config.checkpoints_dir}/model_{global_config.run_name}_multi_id.pkl', 'wb') as f:
+#                pickle.dump(snapshot_data, f)

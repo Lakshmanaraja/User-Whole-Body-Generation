@@ -23,3 +23,9 @@ def load_old_G():
         old_G = pickle.load(f)['G_ema'].to(global_config.device).eval()
         old_G = old_G.float()
     return old_G
+    
+def load_face_G():
+    with open(paths_config.face_model, 'rb') as f:
+        face_G = pickle.load(f)['G_ema'].to(global_config.device).eval()
+        face_G = face_G.float()
+    return face_G

@@ -11,8 +11,8 @@ from lpips import LPIPS
 from pti.training.projectors import w_projector
 from pti.pti_configs import global_config, paths_config, hyperparameters
 from pti.pti_models.e4e.psp import pSp
-from utils.log_utils import log_image_from_w
-from utils.models_utils import toogle_grad, load_old_G
+from User_Whole_Body_Generation.StyleGAN_Human.utils.log_utils import log_image_from_w
+from User_Whole_Body_Generation.StyleGAN_Human.utils.models_utils import toogle_grad, load_old_G
 
 
 class BaseCoach:

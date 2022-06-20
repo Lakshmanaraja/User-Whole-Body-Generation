@@ -10,7 +10,7 @@ import wandb
 
 from pti.training.coaches.multi_id_coach import MultiIDCoach
 from pti.training.coaches.single_id_coach import SingleIDCoach
-from utils.ImagesDataset import ImagesDataset
+from User_Whole_Body_Generation.StyleGAN_Human.utils.ImagesDataset import ImagesDataset
 
 
 def run_PTI(run_name='', use_wandb=False, use_multi_id_training=False):

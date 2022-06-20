@@ -15,7 +15,7 @@ import torch
 import torch.nn.functional as F
 from tqdm import tqdm
 from pti.pti_configs import global_config, hyperparameters
-from utils import log_utils
+from User_Whole_Body_Generation.StyleGAN_Human.utils import log_utils
 import dnnlib
 
 

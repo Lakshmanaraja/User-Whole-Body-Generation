@@ -7,7 +7,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from torchvision.transforms import transforms
-from utils.ImagesDataset import ImagesDataset
+from User_Whole_Body_Generation.StyleGAN_Human.utils.ImagesDataset import ImagesDataset
 
 import cv2
 import time

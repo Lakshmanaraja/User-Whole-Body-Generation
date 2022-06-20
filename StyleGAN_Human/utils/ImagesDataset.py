@@ -2,7 +2,7 @@ import os
 from torch.utils.data import Dataset
 from PIL import Image
 
-from utils.data_utils import make_dataset
+from User_Whole_Body_Generation.StyleGAN_Human.utils.data_utils import make_dataset
 
 
 class ImagesDataset(Dataset):

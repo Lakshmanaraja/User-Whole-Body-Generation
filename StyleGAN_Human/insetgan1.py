@@ -11,7 +11,7 @@ from torch_utils.models_face import Generator as FaceGAN
 import dlib
 from User_Whole_Body_Generation.StyleGAN_Human.utils.alignment import align_face_for_insetgan
 from User_Whole_Body_Generation.StyleGAN_Human.utils.util import visual,tensor_to_numpy, numpy_to_tensor
-import User_Whole_Body_Generation.StyleGAN_Human.legacy
+import User_Whole_Body_Generation.StyleGAN_Human.legacy as legacy
 import os
 import click
 

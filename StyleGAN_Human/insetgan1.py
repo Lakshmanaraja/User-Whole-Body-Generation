@@ -116,7 +116,7 @@ class InsetGAN(torch.nn.Module):
         
   
     # joint optimization
-    def dual_optimizer(self, 
+    def dual_optimizer(self,
                        face_w,
                        body_w,
                        joint_optimization = True,
@@ -127,7 +127,8 @@ class InsetGAN(torch.nn.Module):
                        lr_rampup_length=0.05,
                        seed=None,
                        output_path=None,
-                       video=0): 
+                       video=0,
+                       is_body = False):
         '''
         Given a face_w, optimize a body_w with suitable body pose & shape for face_w
         '''
@@ -251,7 +252,7 @@ class InsetGAN(torch.nn.Module):
             loss_body = self.loss_body(synth_body, ref_body, body_crop, 9000, 0.1)
             loss_reg = self.loss_reg(body_w_opt, body_w_mean, 15000, body_w_delta, 0)
             
-            if joint_optimization == False :
+            if is_body == False :
             
                 loss = loss_coarse + loss_border  + loss_reg
             else :

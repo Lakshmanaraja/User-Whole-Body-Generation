@@ -98,11 +98,12 @@ def crop_img_with_padding(img, keypoints, rect):
     
     try :
          result = cv2.resize(im_pad,(512,1024),interpolation = cv2.INTER_AREA)
+         return result
     
     except Exception as e:
         print(str(e))
-        
-    return result
+        return None
+    
 
 
 def run(args):

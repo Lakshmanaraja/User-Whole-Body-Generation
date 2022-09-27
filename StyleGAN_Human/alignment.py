@@ -162,7 +162,8 @@ def run(args):
             comb= cv2.copyMakeBorder(comb,pad_range+5,pad_range+5,0,0,cv2.BORDER_CONSTANT,value=[255,255,255]) 
         elif int(extTop[1])<=0 or int(extBot[1])>=comb.shape[0]:
             print('PAD: body out of boundary', fname) #should not happened
-            return {}
+            continue;
+            #return {}
         else:
             comb = cv2.copyMakeBorder(comb, pad_range+5, pad_range+5, 0, 0, cv2.BORDER_REPLICATE) #105 instead of 100: give some extra space
         extBot[1] = extBot[1] + pad_range+5
@@ -271,7 +272,8 @@ def align_body(image_folder,output_folder) :
             comb= cv2.copyMakeBorder(comb,pad_range+5,pad_range+5,0,0,cv2.BORDER_CONSTANT,value=[255,255,255])
         elif int(extTop[1])<=0 or int(extBot[1])>=comb.shape[0]:
             print('PAD: body out of boundary', fname) #should not happened
-            return {}
+            continue;
+            #return {}
         else:
             comb = cv2.copyMakeBorder(comb, pad_range+5, pad_range+5, 0, 0, cv2.BORDER_REPLICATE) #105 instead of 100: give some extra space
         extBot[1] = extBot[1] + pad_range+5
@@ -315,7 +317,7 @@ def align_body(image_folder,output_folder) :
 if __name__ == '__main__':
     torch.backends.cudnn.benchmark = True
     torch.backends.cudnn.deterministic = False
-    
+    print("hi. inside alignment")
     t1 = time.time()
     arg_formatter = argparse.ArgumentDefaultsHelpFormatter
     description = 'StyleGAN-Human data process'

@@ -94,7 +94,7 @@ def crop_img_with_padding(img, keypoints, rect):
         cropped_img = img[int(ymin):int(ymax), int(xmin):int(xmax)]
         im_pad = cv2.copyMakeBorder(cropped_img, int(pad_up), int(pad_down), 0,
                                     0, cv2.BORDER_REPLICATE) 
-    print(cropped_img.shape())  
+    print(cropped_img.shape)  
     
     try :
          result = cv2.resize(im_pad,(512,1024),interpolation = cv2.INTER_AREA)

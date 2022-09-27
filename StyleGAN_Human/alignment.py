@@ -204,9 +204,17 @@ def run(args):
         # cv2.imwrite(f'{args.output_folder}/middle_result/{fname}_keypoints.png',canvas)
 
         comb = crop_img_with_padding(comb, keypoints, rect)
+        
+        try :
+
+          cv2.imwrite(f'{args.output_folder}/{fname}.png', comb)
+
+        except Exception as e:
+          print(str(e))
 
         
-        cv2.imwrite(f'{args.output_folder}/{fname}.png', comb)
+        
+        #cv2.imwrite(f'{args.output_folder}/{fname}.png', comb)
         print(f' -- Finished processing \'{fname}\'. --')
         # except:
         #     print(f'Processing \'{fname}\'. Not satisfied the alignment strategy.')
@@ -315,8 +323,15 @@ def align_body(image_folder,output_folder) :
 
         comb = crop_img_with_padding(comb, keypoints, rect)
 
+        try :
+
+          cv2.imwrite(f'{output_folder}/{fname}.png', comb)
+
+        except Exception as e:
+          print(str(e))
+
+        #cv2.imwrite(f'{output_folder}/{fname}.png', comb)
         
-        cv2.imwrite(f'{output_folder}/{fname}.png', comb)
         print(f' -- Finished processing \'{fname}\'. --')
         # except:
         #     print(f'Processing \'{fname}\'. Not satisfied the alignment strategy.')

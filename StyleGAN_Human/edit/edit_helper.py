@@ -212,4 +212,4 @@ def encoder_sefa(G, noise, attr_name, truncation=1, truncation_latent=None,
         latent[:, l, :] += (sefa_vect * strength * 2)
         
 
-    return latent, 
+    return latent, noise
